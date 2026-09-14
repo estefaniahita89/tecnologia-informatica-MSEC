@@ -2188,6 +2188,16 @@ nav a[aria-current="page"]::after,nav a.is-active::after{
   }
 }
 </style>
+
+<style id="per-calendar-pdf-css">
+.per-calendar-card{box-sizing:border-box;display:flex;align-items:flex-start;gap:18px;margin:30px 34px 36px;padding:22px 24px;border:1px solid #D5E4EC;border-radius:18px;background:#F7FBFD;box-shadow:0 8px 22px rgba(18,59,86,.06)}
+.per-calendar-icon{flex:0 0 48px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:#DFF1FA;color:#087DA9;font-size:25px;font-weight:800}
+.per-calendar-content{min-width:0}.per-calendar-kicker{display:block;margin-bottom:4px;color:#0786B4;font-size:10px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.per-calendar-content h3{margin:0 0 6px;color:#123B56;font-size:20px;line-height:1.25}.per-calendar-content p{margin:0;color:#526B7C;font-size:13px;line-height:1.5}
+.per-calendar-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:14px}.per-calendar-button{display:inline-flex;align-items:center;padding:9px 14px;border-radius:9px;background:#078FBD;color:#fff!important;font-size:12px;font-weight:800;text-decoration:none!important}.per-calendar-link{color:#07527A!important;font-size:12px;font-weight:800;text-decoration:none!important}.per-calendar-button:hover,.per-calendar-link:hover{opacity:.88}
+@media(max-width:650px){.per-calendar-card{margin-left:18px;margin-right:18px;padding:18px;gap:13px}.per-calendar-icon{flex-basis:40px;width:40px;height:40px;font-size:21px}.per-calendar-content h3{font-size:18px}}
+</style>
+
 </head>
 <body>
 <header class="header"><div class="brand"><img alt="UNIR · La Universidad en Internet" class="brand-logo" src="https://sourceapi.virtwayevents.com/resource/default/default/images/default/client_logos/logo_unir.png"/></div><div class="blue-strip"></div></header>
@@ -6707,6 +6717,20 @@ html,body{background:transparent!important;overflow-x:hidden!important}
 </style>
 
 <!-- FP_MAP_PAGE_END -->
+
+<section class="per-calendar-card" id="per-calendar-pdf" aria-labelledby="per-calendar-title">
+  <div class="per-calendar-icon" aria-hidden="true">▣</div>
+  <div class="per-calendar-content">
+    <span class="per-calendar-kicker">Documento del PER</span>
+    <h3 id="per-calendar-title">Calendario MSEC 16152</h3>
+    <p>Calendario general del curso 2026-2027, con semanas lectivas, periodos de repaso, exámenes y entregas.</p>
+    <div class="per-calendar-actions">
+      <a class="per-calendar-button" href="Calendarios%20MSEC%2016152%20(1).pdf" target="_blank" rel="noopener">Abrir PDF ↗</a>
+      <a class="per-calendar-link" href="Calendarios%20MSEC%2016152%20(1).pdf" download="Calendarios MSEC 16152.pdf">Descargar PDF ↓</a>
+    </div>
+  </div>
+</section>
+
 <footer class="footer"><div class="footer-inner"><p>Profesorado de la especialidad de Tecnología e Informática · Máster en Formación del Profesorado</p><p class="footer-credit">Guía elaborada por el equipo de dirección</p></div></footer>
 <script>
 const search=document.getElementById('faqSearch');
