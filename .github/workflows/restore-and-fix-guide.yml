@@ -15,37 +15,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Restore previous guide and apply fixes
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Restore guide and apply fixes
         shell: bash
         run: |
-          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/estefaniahita89/tecnologia-informatica-MSEC/contents/guia_profesorado_tecnologia_informatica.html?ref=bc3c057bf38c63a1b808e82db020f5de09b3004c" \
-            | jq -r '.content' | tr -d '\n' | base64 --decode > guia_profesorado_tecnologia_informatica.html
+          git show HEAD~6:guia_profesorado_tecnologia_informatica.html > guia_profesorado_tecnologia_informatica.html
           python - <<'PY'
           from pathlib import Path
           import re
           path = Path('guia_profesorado_tecnologia_informatica.html')
           html = path.read_text(encoding='utf-8')
+          # Calendar PDF link and card margins.
           html, n = re.subn(r'href="data:application/pdf;base64,[^"]+"', 'href="Calendarios%20MSEC%2016152%20(1).pdf"', html, count=2)
           if n != 2: raise SystemExit(f'Expected 2 PDF links, found {n}')
           html = re.sub(r'download="[^"]*"', 'download="Calendarios MSEC 16152.pdf"', html, count=1)
           html = html.replace('margin:28px 0 32px;\n  padding:22px 24px;', 'margin:28px 34px 34px;\n  padding:22px 24px;', 1)
           html = html.replace('.per-calendar-card{padding:18px;gap:13px}', '.per-calendar-card{margin-left:18px;margin-right:18px;padding:18px;gap:13px}', 1)
+          # Align roadmap information boxes with the roadmap cards.
           old = '''#page-recorrido .per-forum-guidance,\n#page-recorrido .per-activity-deadlines,\n#page-recorrido .per-exam-responsibilities{\n  margin:18px 0 22px;\n  padding:18px 20px;\n  border:1px solid #d9e7ee;\n  border-radius:15px;\n  background:#f8fbfd;\n}'''
-          new = '''#page-recorrido .per-forum-guidance,\n#page-recorrido .per-activity-deadlines,\n#page-recorrido .per-exam-responsibilities{\n  margin:18px 0 22px 96px;\n  padding:18px 20px;\n  border:1px solid #d9e7ee;\n  border-radius:15px;\n  background:#f8fbfd;\n}\n@media(max-width:900px){\n  #page-recorrido .per-forum-guidance,\n  #page-recorrido .per-activity-deadlines,\n  #page-recorrido .per-exam-responsibilities{\n    margin-left:68px;\n  }\n}\n@media(max-width:560px){\n  #page-recorrido .per-forum-guidance,\n  #page-recorrido .per-activity-deadlines,\n  #page-recorrido .per-exam-responsibilities{\n    margin-left:0;\n  }\n}'''
+          new = '''#page-recorrido .per-forum-guidance,\n#page-recorrido .per-activity-deadlines,\n#page-recorrido .per-exam-responsibilities{\n  margin:18px 0 22px 96px;\n  padding:18px 20px;\n  border:1px solid #d9e7ee;\n  border-radius:15px;\n  background:#f8fbfd;\n}\n@media(max-width:900px){\n  #page-recorrido .per-forum-guidance,\n  #page-recorrido .per-activity-deadlines,\n  #page-recorrido .per-exam-responsibilities{margin-left:68px;}\n}\n@media(max-width:560px){\n  #page-recorrido .per-forum-guidance,\n  #page-recorrido .per-activity-deadlines,\n  #page-recorrido .per-exam-responsibilities{margin-left:0;}\n}'''
           if old not in html: raise SystemExit('CSS block not found')
           html = html.replace(old, new, 1)
+          # First-session PowerPoint.
           marker = '<div class="per-callout">Cada grabación debe titularse manualmente desde el portal de Zoom antes de la sesión, para que el alumnado pueda localizarla correctamente.</div>'
           ppt = 'Clase%20presentaci%C3%B3n%20asignatura%20para%20adaptar%20a%20cada%20asignatura%20(1).pptx'
-          button = marker + f'''\n<div class="per-actions per-session-materials">\n<a class="per-material-button" href="{ppt}" download="PowerPoint primera sesión.pptx">Descargar PowerPoint de la 1.ª sesión ↓</a>\n</div>'''
+          button = marker + f'''\n<div class="per-actions per-session-materials"><a class="per-material-button" href="{ppt}" download="PowerPoint primera sesión.pptx">Descargar PowerPoint de la 1.ª sesión ↓</a></div>'''
           if marker not in html: raise SystemExit('First-session marker not found')
           html = html.replace(marker, button, 1)
           style_marker = '.per-actions span{padding:8px 12px;border-radius:999px;background:#edf8fc;color:#17627d;font-size:13px;font-weight:700}'
-          style_add = style_marker + '''\n.per-session-materials{margin-top:14px}\n.per-material-button{display:inline-flex;align-items:center;padding:9px 14px;border-radius:9px;background:#078fbd;color:#fff !important;font-size:12px;font-weight:800;text-decoration:none !important}\n.per-material-button:hover{opacity:.88}\n'''
+          style_add = style_marker + '''\n.per-session-materials{margin-top:14px}.per-material-button{display:inline-flex;align-items:center;padding:9px 14px;border-radius:9px;background:#078fbd;color:#fff !important;font-size:12px;font-weight:800;text-decoration:none !important}.per-material-button:hover{opacity:.88}\n'''
           if style_marker not in html: raise SystemExit('Action style marker not found')
           html = html.replace(style_marker, style_add, 1)
           path.write_text(html, encoding='utf-8')
