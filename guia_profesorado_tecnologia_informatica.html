@@ -2198,6 +2198,16 @@ nav a[aria-current="page"]::after,nav a.is-active::after{
 @media(max-width:650px){.per-calendar-card{margin-left:18px;margin-right:18px;padding:18px;gap:13px}.per-calendar-icon{flex-basis:40px;width:40px;height:40px;font-size:21px}.per-calendar-content h3{font-size:18px}}
 </style>
 
+<style id="forum-guidance-layout-fix">
+#page-recorrido .per-forum-guidance,
+#page-recorrido .per-activity-deadlines,
+#page-recorrido .per-exam-responsibilities{margin-left:96px!important;}
+@media(max-width:900px){#page-recorrido .per-forum-guidance,#page-recorrido .per-activity-deadlines,#page-recorrido .per-exam-responsibilities{margin-left:68px!important;}}
+@media(max-width:560px){#page-recorrido .per-forum-guidance,#page-recorrido .per-activity-deadlines,#page-recorrido .per-exam-responsibilities{margin-left:0!important;}}
+</style>
+<style id="first-session-ppt-style">
+.per-session-materials{margin-top:14px}.per-material-button{display:inline-flex;align-items:center;padding:9px 14px;border-radius:9px;background:#078fbd;color:#fff!important;font-size:12px;font-weight:800;text-decoration:none!important}.per-material-button:hover{opacity:.88}
+</style>
 </head>
 <body>
 <header class="header"><div class="brand"><img alt="UNIR · La Universidad en Internet" class="brand-logo" src="https://sourceapi.virtwayevents.com/resource/default/default/images/default/client_logos/logo_unir.png"/></div><div class="blue-strip"></div></header>
@@ -7030,4 +7040,26 @@ window.addEventListener('message',function(e){
 })();
 </script>
 
+<script id="first-session-ppt-link">
+(function(){
+  function addPpt(){
+    var callouts=document.querySelectorAll('#page-recorrido .per-callout');
+    var target=null;
+    callouts.forEach(function(c){if(!target && c.textContent.indexOf('Cada grabación debe titularse manualmente')!==-1)target=c;});
+    if(!target || document.getElementById('first-session-ppt-download'))return;
+    var wrap=document.createElement('div');
+    wrap.className='per-actions per-session-materials';
+    var link=document.createElement('a');
+    link.id='first-session-ppt-download';
+    link.className='per-material-button';
+    link.href='Clase%20presentaci%C3%B3n%20asignatura%20para%20adaptar%20a%20cada%20asignatura%20(1).pptx';
+    link.setAttribute('download','PowerPoint primera sesión.pptx');
+    link.textContent='Descargar PowerPoint de la 1.ª sesión ↓';
+    wrap.appendChild(link);
+    target.insertAdjacentElement('afterend',wrap);
+  }
+  document.addEventListener('DOMContentLoaded',addPpt);
+  window.addEventListener('hashchange',addPpt);
+})();
+</script>
 </body></html>
